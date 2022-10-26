@@ -1,2 +1,3 @@
 # aerisweather-demo
- Demo of the AerisWeather API
+
+Demo of the AerisWeather API
