@@ -12,6 +12,27 @@ template.innerHTML = `
       height: 100vh;
     }
   </style>
+
+  <svg
+    id="storm-report-svg"
+    style="width: 24px; height: 24px"
+    viewBox="0 0 24 24"
+  >
+    <path
+      fill="currentColor"
+      d="M6,16A5,5 0 0,1 1,11A5,5 0 0,1 6,6C7,3.65 9.3,2 12,2C15.43,2 18.24,4.66 18.5,8.03L19,8A4,4 0 0,1 23,12A4,4 0 0,1 19,16H18A1,1 0 0,1 17,15A1,1 0 0,1 18,14H19A2,2 0 0,0 21,12A2,2 0 0,0 19,10H17V9A5,5 0 0,0 12,4C9.5,4 7.45,5.82 7.06,8.19C6.73,8.07 6.37,8 6,8A3,3 0 0,0 3,11A3,3 0 0,0 6,14H7A1,1 0 0,1 8,15A1,1 0 0,1 7,16H6M12,11H15L13,15H15L11.25,22L12,17H9.5L12,11Z"
+    />
+  </svg>
+  <svg
+    id="facility-svg"
+    style="width: 24px; height: 24px"
+    viewBox="0 0 24 24"
+  >
+    <path
+      fill="currentColor"
+      d="M5,3V21H11V17.5H13V21H19V3H5M7,5H9V7H7V5M11,5H13V7H11V5M15,5H17V7H15V5M7,9H9V11H7V9M11,9H13V11H11V9M15,9H17V11H15V9M7,13H9V15H7V13M11,13H13V15H11V13M15,13H17V15H15V13M7,17H9V19H7V17M15,17H17V19H15V17Z"
+    />
+  </svg>
 `;
 
 const PERIOD_OPTIONS = [6, 12, 24, 48, 168];
@@ -63,7 +84,18 @@ class AerisWeatherMap extends HTMLElement {
 
   parseSvg(id) {
     let obj = document.getElementById(id);
-    return obj;
+    if (!obj) {
+      obj = this._shadowRoot.getElementById(id);
+      parent = this._shadowRoot;
+    } else {
+      parent = obj.parentElement;
+      this._shadowRoot.removeChild(this._shadowRoot.getElementById(id));
+    }
+
+    let clonedObj = obj.cloneNode(true);
+    parent.removeChild(obj);
+
+    return clonedObj;
   }
 
   parseAttribute(name) {
